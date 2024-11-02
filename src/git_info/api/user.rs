@@ -1,43 +1,38 @@
 use super::{
-    requester::{Methods, Requester, ResponseError},
-    GitInfo, GitUser,
+    requester::{Methods, Requester},
+    ApiError, ApiService, GitUser,
 };
 
-impl<T> GitInfo<T>
+impl<T> ApiService<T>
 where
     T: Requester,
 {
-    pub fn user(&self, username: &str) -> Result<GitUser, ResponseError> {
+    pub fn user(&self, username: &str) -> Result<GitUser, ApiError> {
         let path = format!("/users/{}", username);
         let url = self.prepare_url(&path);
 
         let response = self
             .requester
-            .fetch(Methods::Get, &url, &self.headers, None)?;
+            .fetch(Methods::Get, &url, &self.headers, None);
+
+        if let Some(error) = self.contains_error(&response, &url) {
+            return Err(error);
+        }
 
         let Some(body) = response.body() else {
-            return Err(ResponseError::new(1001, Some(String::from("No body"))));
+            return Err(ApiError::no_body(Some(url)));
         };
 
         let Ok(json) = serde_json::from_str::<serde_json::Value>(body) else {
-            return Err(ResponseError::new(
-                1002,
-                Some(String::from("Error invalid json")),
-            ));
+            return Err(ApiError::invalid_json(Some(url)));
         };
 
         let Some(user) = json["login"].as_str() else {
-            return Err(ResponseError::new(
-                1003,
-                Some(String::from("Error user not found")),
-            ));
+            return Err(ApiError::field_not_found("login", None));
         };
 
         let Some(email) = json["email"].as_str() else {
-            return Err(ResponseError::new(
-                1004,
-                Some(String::from("Error email not found")),
-            ));
+            return Err(ApiError::field_not_found("email", None));
         };
 
         let avatar = json["avatar_url"]
@@ -60,7 +55,7 @@ use super::{requester::Response, RequesterMock};
 #[cfg(test)]
 mod tests {
 
-    use super::{GitInfo, GitUser, RequesterMock, Response, ResponseError};
+    use super::{ApiError, ApiService, GitUser, RequesterMock, Response};
 
     #[test]
     fn test_user_success() {
@@ -76,7 +71,7 @@ mod tests {
 
         let requester = RequesterMock::from_response(response);
 
-        let git_info = GitInfo::new(requester, String::from("fake_token"));
+        let git_info = ApiService::new(requester, String::from("fake_token"));
 
         let user = git_info.user("juanjofp").unwrap();
 
@@ -85,11 +80,75 @@ mod tests {
 
     #[test]
     fn test_user_not_found() {
-        let expected_error = ResponseError::new(404, None);
+        let expected_error =
+            ApiError::not_found(Some(String::from("https://api.github.com/users/juanjofp")));
 
-        let requester = RequesterMock::from_error(expected_error.clone());
+        let response = Response::new(404, None);
 
-        let git_info = GitInfo::new(requester, String::from("fake_token"));
+        let requester = RequesterMock::from_response(response);
+
+        let git_info = ApiService::new(requester, String::from("fake_token"));
+
+        let response = git_info.user("juanjofp");
+
+        assert!(response.is_err());
+
+        let error = response.unwrap_err();
+
+        assert_eq!(error, expected_error);
+    }
+
+    #[test]
+    fn test_user_no_body() {
+        let expected_error =
+            ApiError::no_body(Some(String::from("https://api.github.com/users/juanjofp")));
+
+        let response = Response::new(200, None);
+
+        let requester = RequesterMock::from_response(response);
+
+        let git_info = ApiService::new(requester, String::from("fake_token"));
+
+        let response = git_info.user("juanjofp");
+
+        assert!(response.is_err());
+
+        let error = response.unwrap_err();
+
+        assert_eq!(error, expected_error);
+    }
+
+    #[test]
+    fn test_user_invalid_json() {
+        let expected_error =
+            ApiError::invalid_json(Some(String::from("https://api.github.com/users/juanjofp")));
+
+        let response = Response::new(200, Some(String::from("invalid json")));
+
+        let requester = RequesterMock::from_response(response);
+
+        let git_info = ApiService::new(requester, String::from("fake_token"));
+
+        let response = git_info.user("juanjofp");
+
+        assert!(response.is_err());
+
+        let error = response.unwrap_err();
+
+        assert_eq!(error, expected_error);
+    }
+
+    #[test]
+    fn test_user_without_login() {
+        let expected_error = ApiError::field_not_found("login", None);
+
+        let str_response = r#"{"id":446496,"node_id":"MDQ6VXNlcjQ0NjQ5Ng==","avatar_url":"https://avatars.githubusercontent.com/u/446496?v=4","gravatar_id":"","url":"https://api.github.com/users/Juanjofp"}"#;
+
+        let response = Response::new(200, Some(String::from(str_response)));
+
+        let requester = RequesterMock::from_response(response);
+
+        let git_info = ApiService::new(requester, String::from("fake_token"));
 
         let response = git_info.user("juanjofp");
 

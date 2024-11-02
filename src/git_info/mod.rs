@@ -1,4 +1,4 @@
 mod api;
 mod data;
 
-pub use api::GitInfo;
+pub use api::ApiService;

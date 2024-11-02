@@ -1,3 +1,4 @@
+mod error;
 mod requester;
 mod user;
 
@@ -7,7 +8,9 @@ use requester::{Headers, Requester};
 
 use super::data::GitUser;
 
-pub struct GitInfo<T>
+use error::ApiError;
+
+pub struct ApiService<T>
 where
     T: Requester,
 {
@@ -16,7 +19,7 @@ where
     requester: T,
 }
 
-impl<T> GitInfo<T>
+impl<T> ApiService<T>
 where
     T: Requester,
 {
@@ -30,7 +33,7 @@ where
             (String::from("User-Agent"), String::from("jjfp::rust")),
         ]);
 
-        GitInfo {
+        ApiService {
             host: "https://api.github.com".to_string(),
             headers,
             requester,
@@ -39,6 +42,20 @@ where
 
     fn prepare_url(&self, path: &str) -> String {
         format!("{}{}", self.host, path)
+    }
+
+    fn contains_error(&self, response: &requester::Response, url: &str) -> Option<ApiError> {
+        let url = Some(String::from(url));
+
+        if response.status() == 0 {
+            return Some(ApiError::no_response(url));
+        }
+
+        if response.status() == 404 {
+            return Some(ApiError::not_found(url));
+        }
+
+        None
     }
 }
 
