@@ -71,7 +71,7 @@ mod tests {
 
         let response = Response::new(200, Some(String::from(str_response)));
 
-        let requester = RequesterMock::from_response(response);
+        let requester = RequesterMock::from_response(vec![response]);
 
         let git_info = ApiService::new(requester, String::from("fake_token"));
 
@@ -87,7 +87,7 @@ mod tests {
 
         let response = Response::new(404, None);
 
-        let requester = RequesterMock::from_response(response);
+        let requester = RequesterMock::from_response(vec![response]);
 
         let git_info = ApiService::new(requester, String::from("fake_token"));
 
@@ -107,7 +107,7 @@ mod tests {
 
         let response = Response::new(200, None);
 
-        let requester = RequesterMock::from_response(response);
+        let requester = RequesterMock::from_response(vec![response]);
 
         let git_info = ApiService::new(requester, String::from("fake_token"));
 
@@ -127,7 +127,7 @@ mod tests {
 
         let response = Response::new(200, Some(String::from("invalid json")));
 
-        let requester = RequesterMock::from_response(response);
+        let requester = RequesterMock::from_response(vec![response]);
 
         let git_info = ApiService::new(requester, String::from("fake_token"));
 
@@ -148,7 +148,7 @@ mod tests {
 
         let response = Response::new(200, Some(String::from(str_response)));
 
-        let requester = RequesterMock::from_response(response);
+        let requester = RequesterMock::from_response(vec![response]);
 
         let git_info = ApiService::new(requester, String::from("fake_token"));
 

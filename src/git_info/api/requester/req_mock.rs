@@ -3,15 +3,19 @@ use super::{Headers, Methods, Requester, Response};
 #[cfg(test)]
 pub mod mocks {
 
+    use std::cell::RefCell;
+
     use super::{Headers, Methods, Requester, Response};
 
     pub struct RequesterMock {
-        response: Response,
+        response: RefCell<Vec<Response>>,
     }
 
     impl RequesterMock {
-        pub fn from_response(response: Response) -> Self {
-            RequesterMock { response }
+        pub fn from_response(responses: Vec<Response>) -> Self {
+            Self {
+                response: RefCell::new(responses),
+            }
         }
     }
 
@@ -23,7 +27,11 @@ pub mod mocks {
             _headers: &Headers,
             _body: Option<String>,
         ) -> Response {
-            self.response.clone()
+            if self.response.borrow().len() > 0 {
+                self.response.borrow_mut().remove(0)
+            } else {
+                Response::new(0, None)
+            }
         }
     }
 }
