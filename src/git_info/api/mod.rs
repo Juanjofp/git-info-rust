@@ -1,16 +1,18 @@
+mod constants;
 mod error;
+mod me;
 mod requester;
 mod user;
 
 use std::vec;
 
-use requester::{Headers, Requester};
+use super::data::GitUser;
 
 pub use requester::RequesterUReq;
 
-use super::data::GitUser;
-
 pub use error::ApiError;
+
+use requester::{Headers, Methods, Requester};
 
 pub struct ApiService<T>
 where
@@ -62,4 +64,4 @@ where
 }
 
 #[cfg(test)]
-use requester::RequesterMock;
+use requester::{RequesterMock, Response};

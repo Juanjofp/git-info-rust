@@ -7,9 +7,13 @@ fn main() -> anyhow::Result<()> {
 
     let git_info = GitInfo::new(token);
 
-    let user = git_info.user("juanjo");
+    let user = git_info.user("octokit");
 
     println!("User: {:?}", user);
+
+    let me = git_info.me();
+
+    println!("Me: {:?}", me);
 
     Ok(())
 }

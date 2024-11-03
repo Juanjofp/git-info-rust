@@ -4,9 +4,8 @@ impl<T> ApiService<T>
 where
     T: Requester,
 {
-    pub fn user(&self, username: &str) -> Result<GitUser, ApiError> {
-        let path = format!("{}{}", constants::paths::USER, username);
-        let url = self.prepare_url(&path);
+    pub fn me(&self) -> Result<GitUser, ApiError> {
+        let url = self.prepare_url(constants::paths::ME);
 
         let response = self
             .requester
@@ -28,7 +27,9 @@ where
             return Err(ApiError::field_not_found(constants::fields::LOGIN, None));
         };
 
-        let email = json[constants::fields::EMAIL].as_str().unwrap_or("");
+        let Some(email) = json[constants::fields::EMAIL].as_str() else {
+            return Err(ApiError::field_not_found(constants::fields::EMAIL, None));
+        };
 
         let avatar = json[constants::fields::AVATAR_URL]
             .as_str()
@@ -53,7 +54,7 @@ mod tests {
     use super::{ApiError, ApiService, GitUser, RequesterMock, RequesterUReq, Response};
 
     #[test]
-    fn test_user_success() {
+    fn test_me_success() {
         let expected_user = GitUser::new(
             String::from("Juanjofp"),
             String::from("juanjo@juanjofp.com"),
@@ -68,15 +69,14 @@ mod tests {
 
         let git_info = ApiService::new(requester, String::from("fake_token"));
 
-        let user = git_info.user("juanjofp").unwrap();
+        let user = git_info.me().unwrap();
 
         assert_eq!(user, expected_user);
     }
 
     #[test]
-    fn test_user_not_found() {
-        let expected_error =
-            ApiError::not_found(Some(String::from("https://api.github.com/users/juanjofp")));
+    fn test_me_not_found() {
+        let expected_error = ApiError::not_found(Some(String::from("https://api.github.com/user")));
 
         let response = Response::new(404, None);
 
@@ -84,7 +84,7 @@ mod tests {
 
         let git_info = ApiService::new(requester, String::from("fake_token"));
 
-        let response = git_info.user("juanjofp");
+        let response = git_info.me();
 
         assert!(response.is_err());
 
@@ -94,9 +94,8 @@ mod tests {
     }
 
     #[test]
-    fn test_user_no_body() {
-        let expected_error =
-            ApiError::no_body(Some(String::from("https://api.github.com/users/juanjofp")));
+    fn test_me_no_body() {
+        let expected_error = ApiError::no_body(Some(String::from("https://api.github.com/user")));
 
         let response = Response::new(200, None);
 
@@ -104,7 +103,7 @@ mod tests {
 
         let git_info = ApiService::new(requester, String::from("fake_token"));
 
-        let response = git_info.user("juanjofp");
+        let response = git_info.me();
 
         assert!(response.is_err());
 
@@ -114,9 +113,9 @@ mod tests {
     }
 
     #[test]
-    fn test_user_invalid_json() {
+    fn test_me_invalid_json() {
         let expected_error =
-            ApiError::invalid_json(Some(String::from("https://api.github.com/users/juanjofp")));
+            ApiError::invalid_json(Some(String::from("https://api.github.com/user")));
 
         let response = Response::new(200, Some(String::from("invalid json")));
 
@@ -124,7 +123,7 @@ mod tests {
 
         let git_info = ApiService::new(requester, String::from("fake_token"));
 
-        let response = git_info.user("juanjofp");
+        let response = git_info.me();
 
         assert!(response.is_err());
 
@@ -134,7 +133,7 @@ mod tests {
     }
 
     #[test]
-    fn test_user_without_login() {
+    fn test_me_without_login() {
         let expected_error = ApiError::field_not_found("login", None);
 
         let str_response = r#"{"id":446496,"node_id":"MDQ6VXNlcjQ0NjQ5Ng==","avatar_url":"https://avatars.githubusercontent.com/u/446496?v=4","gravatar_id":"","url":"https://api.github.com/users/Juanjofp"}"#;
@@ -145,7 +144,7 @@ mod tests {
 
         let git_info = ApiService::new(requester, String::from("fake_token"));
 
-        let response = git_info.user("juanjofp");
+        let response = git_info.me();
 
         assert!(response.is_err());
 
@@ -169,7 +168,7 @@ mod tests {
 
         let git_info = ApiService::new(requester, token);
 
-        let user = git_info.user("12345432345").unwrap();
+        let user = git_info.me().unwrap();
 
         assert_eq!(user, expected_user);
     }

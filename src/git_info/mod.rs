@@ -1,6 +1,7 @@
 mod api;
 mod data;
 mod error;
+mod me;
 mod user;
 
 use data::GitUser;
