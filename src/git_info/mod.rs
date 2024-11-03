@@ -1,6 +1,7 @@
 mod api;
 mod data;
 mod error;
+mod user;
 
 use data::GitUser;
 
@@ -19,9 +20,5 @@ impl GitInfo {
         let api_service = ApiService::new(requester, token);
 
         Self { api_service }
-    }
-
-    pub fn user(&self, username: &str) -> Result<GitUser, GitError> {
-        self.api_service.user(username).map_err(GitError::from)
     }
 }
