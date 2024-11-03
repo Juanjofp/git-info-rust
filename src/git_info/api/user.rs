@@ -31,9 +31,11 @@ where
             return Err(ApiError::field_not_found("login", None));
         };
 
-        let Some(email) = json["email"].as_str() else {
-            return Err(ApiError::field_not_found("email", None));
-        };
+        // let Some(email) = json["email"].as_str() else {
+        //     return Err(ApiError::field_not_found("email", None));
+        // };
+
+        let email = json["email"].as_str().unwrap_or("");
 
         let avatar = json["avatar_url"]
             .as_str()
@@ -50,12 +52,12 @@ where
 }
 
 #[cfg(test)]
-use super::{requester::Response, RequesterMock};
+use super::{requester::Response, RequesterMock, RequesterUReq};
 
 #[cfg(test)]
 mod tests {
 
-    use super::{ApiError, ApiService, GitUser, RequesterMock, Response};
+    use super::{ApiError, ApiService, GitUser, RequesterMock, RequesterUReq, Response};
 
     #[test]
     fn test_user_success() {
@@ -157,5 +159,25 @@ mod tests {
         let error = response.unwrap_err();
 
         assert_eq!(error, expected_error);
+    }
+
+    #[test]
+    #[ignore]
+    fn test_real_implementation() {
+        let expected_user = GitUser::new(
+            String::from("Juanjofp"),
+            String::from("juanjo@juanjofp.com"),
+            String::from("https://avatars.githubusercontent.com/u/446496?v=4"),
+        );
+
+        let requester = RequesterUReq::new();
+
+        let token = String::from("fake_token");
+
+        let git_info = ApiService::new(requester, token);
+
+        let user = git_info.user("12345432345").unwrap();
+
+        assert_eq!(user, expected_user);
     }
 }

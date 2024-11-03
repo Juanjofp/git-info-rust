@@ -1,14 +1,15 @@
-use anyhow::Result;
-// use git_info::GitInfo;
+use git_info::GitInfo;
 
-fn main() -> Result<()> {
+fn main() -> anyhow::Result<()> {
     println!("Hello, world!");
 
-    // let git_info = GitInfo::new(token);
+    let token = String::from("fake_token");
 
-    // let user = git_info.user()?;
+    let git_info = GitInfo::new(token);
 
-    // println!("User: {}", user);
+    let user = git_info.user("juanjo");
+
+    println!("User: {:?}", user);
 
     Ok(())
 }

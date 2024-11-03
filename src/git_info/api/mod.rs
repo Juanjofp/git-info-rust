@@ -6,9 +6,11 @@ use std::vec;
 
 use requester::{Headers, Requester};
 
+pub use requester::RequesterUReq;
+
 use super::data::GitUser;
 
-use error::ApiError;
+pub use error::ApiError;
 
 pub struct ApiService<T>
 where
