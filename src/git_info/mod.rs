@@ -2,9 +2,10 @@ mod api;
 mod data;
 mod error;
 mod me;
+mod repository;
 mod user;
 
-use data::GitUser;
+use data::{GitRepositories, GitUser};
 
 use api::{ApiError, ApiService, RequesterUReq};
 

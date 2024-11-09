@@ -1,12 +1,15 @@
 mod constants;
+mod endpoints;
 mod error;
 mod me;
+mod parser;
+mod repository;
 mod requester;
 mod user;
 
 use std::vec;
 
-use super::data::GitUser;
+use super::data::{GitRepositories, GitRepository, GitUser};
 
 pub use requester::RequesterUReq;
 
@@ -14,11 +17,14 @@ pub use error::ApiError;
 
 use requester::{Headers, Methods, Requester};
 
+use endpoints::Endpoints;
+
+use parser::Parser;
+
 pub struct ApiService<T>
 where
     T: Requester,
 {
-    host: String,
     headers: Headers,
     requester: T,
 }
@@ -37,15 +43,7 @@ where
             (String::from("User-Agent"), String::from("jjfp::rust")),
         ]);
 
-        ApiService {
-            host: "https://api.github.com".to_string(),
-            headers,
-            requester,
-        }
-    }
-
-    fn prepare_url(&self, path: &str) -> String {
-        format!("{}{}", self.host, path)
+        ApiService { headers, requester }
     }
 
     fn contains_error(&self, response: &requester::Response, url: &str) -> Option<ApiError> {

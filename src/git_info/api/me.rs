@@ -1,11 +1,11 @@
-use super::{constants, ApiError, ApiService, GitUser, Methods, Requester};
+use super::{ApiError, ApiService, Endpoints, GitUser, Methods, Parser, Requester};
 
 impl<T> ApiService<T>
 where
     T: Requester,
 {
     pub fn me(&self) -> Result<GitUser, ApiError> {
-        let url = self.prepare_url(constants::paths::ME);
+        let url = Endpoints::me();
 
         let response = self
             .requester
@@ -15,33 +15,7 @@ where
             return Err(error);
         }
 
-        let Some(body) = response.body() else {
-            return Err(ApiError::no_body(Some(url)));
-        };
-
-        let Ok(json) = serde_json::from_str::<serde_json::Value>(body) else {
-            return Err(ApiError::invalid_json(Some(url)));
-        };
-
-        let Some(user) = json[constants::fields::LOGIN].as_str() else {
-            return Err(ApiError::field_not_found(constants::fields::LOGIN, None));
-        };
-
-        let Some(email) = json[constants::fields::EMAIL].as_str() else {
-            return Err(ApiError::field_not_found(constants::fields::EMAIL, None));
-        };
-
-        let avatar = json[constants::fields::AVATAR_URL]
-            .as_str()
-            .unwrap_or(constants::fields::DEFAULT_AVATAR);
-
-        let user = GitUser::new(
-            String::from(user),
-            String::from(email),
-            String::from(avatar),
-        );
-
-        Ok(user)
+        Parser::parse_git_user(response.body(), &url)
     }
 }
 
@@ -51,17 +25,17 @@ use super::{RequesterMock, RequesterUReq, Response};
 #[cfg(test)]
 mod tests {
 
-    use super::{ApiError, ApiService, GitUser, RequesterMock, RequesterUReq, Response};
+    use super::{ApiError, ApiService, GitUser, Parser, RequesterMock, RequesterUReq, Response};
 
     #[test]
     fn test_me_success() {
-        let expected_user = GitUser::new(
-            String::from("Juanjofp"),
-            String::from("juanjo@juanjofp.com"),
-            String::from("https://avatars.githubusercontent.com/u/446496?v=4"),
-        );
-
         let str_response = r#"{"login":"Juanjofp","id":446496,"node_id":"MDQ6VXNlcjQ0NjQ5Ng==","avatar_url":"https://avatars.githubusercontent.com/u/446496?v=4","gravatar_id":"","url":"https://api.github.com/users/Juanjofp","html_url":"https://github.com/Juanjofp","followers_url":"https://api.github.com/users/Juanjofp/followers","following_url":"https://api.github.com/users/Juanjofp/following{/other_user}","gists_url":"https://api.github.com/users/Juanjofp/gists{/gist_id}","starred_url":"https://api.github.com/users/Juanjofp/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/Juanjofp/subscriptions","organizations_url":"https://api.github.com/users/Juanjofp/orgs","repos_url":"https://api.github.com/users/Juanjofp/repos","events_url":"https://api.github.com/users/Juanjofp/events{/privacy}","received_events_url":"https://api.github.com/users/Juanjofp/received_events","type":"User","user_view_type":"public","site_admin":false,"name":"Juanjo","company":"Digio","blog":"http://juanjofp.com","location":"Murcia, Spain","email":"juanjo@juanjofp.com","hireable":null,"bio":null,"twitter_username":null,"notification_email":"juanjo@juanjofp.com","public_repos":62,"public_gists":5,"followers":37,"following":75,"created_at":"2010-10-20T07:04:01Z","updated_at":"2024-10-14T10:54:05Z"}"#;
+
+        let expected_user = Parser::parse_git_user(
+            Some(&String::from(str_response)),
+            "https://api.github.com/user",
+        )
+        .unwrap();
 
         let response = Response::new(200, Some(String::from(str_response)));
 

@@ -11,24 +11,24 @@ pub type Headers = HashMap<String, String>;
 
 pub enum Methods {
     Get,
-    Post,
-    Put,
-    Delete,
-    Patch,
-    Head,
-    Options,
+    // Post,
+    // Put,
+    // Delete,
+    // Patch,
+    // Head,
+    // Options,
 }
 
 impl Methods {
     pub fn as_str(&self) -> &str {
         match self {
             Methods::Get => "GET",
-            Methods::Post => "POST",
-            Methods::Put => "PUT",
-            Methods::Delete => "DELETE",
-            Methods::Patch => "PATCH",
-            Methods::Head => "HEAD",
-            Methods::Options => "OPTIONS",
+            // Methods::Post => "POST",
+            // Methods::Put => "PUT",
+            // Methods::Delete => "DELETE",
+            // Methods::Patch => "PATCH",
+            // Methods::Head => "HEAD",
+            // Methods::Options => "OPTIONS",
         }
     }
 }

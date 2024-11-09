@@ -1,7 +1,7 @@
 use git_info::GitInfo;
 
 fn main() -> anyhow::Result<()> {
-    println!("Hello, world!");
+    println!("Hello, Github!");
 
     let token = String::from("fake_token");
 
@@ -14,6 +14,10 @@ fn main() -> anyhow::Result<()> {
     let me = git_info.me();
 
     println!("Me: {:?}", me);
+
+    let repos = git_info.repositories("juanjofp");
+
+    println!("Repos: {:?}", repos);
 
     Ok(())
 }
