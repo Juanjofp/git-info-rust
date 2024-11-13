@@ -70,7 +70,7 @@ impl Display for ApiError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         write!(
             f,
-            "ApiError: status: {}, message: {}",
+            "ApiError: error: {}, message: {}",
             self.name(),
             self.message(),
         )
