@@ -57,6 +57,10 @@ where
             return Some(ApiError::not_found(url));
         }
 
+        if response.status() == 401 {
+            return Some(ApiError::no_response(url));
+        }
+
         None
     }
 }
