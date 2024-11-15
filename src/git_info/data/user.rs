@@ -1,8 +1,8 @@
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct GitUser {
-    name: String,
-    email: String,
-    avatar: String,
+    pub name: String,
+    pub email: String,
+    pub avatar: String,
 }
 
 impl GitUser {
