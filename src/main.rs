@@ -34,5 +34,24 @@ fn main() -> anyhow::Result<()> {
         println!("Repo: {} {}", repo.name, repo.description);
     });
 
+    let repo = git_info.repository("juanjofp", "git-info-rust");
+    let Ok(repo) = repo else {
+        println!("Error: {:?}", repo.unwrap_err());
+        return Err(anyhow::anyhow!("Error repo request"));
+    };
+
+    println!("Repo: {} {}", repo.name, repo.description);
+
+    let events = git_info.events("juanjofp");
+    let Ok(events) = events else {
+        println!("Error: {:?}", events.unwrap_err());
+        return Err(anyhow::anyhow!("Error events request"));
+    };
+
+    events.iter().for_each(|event| {
+        println!("Event: {} {}", event.kind, event.created_at);
+    });
+
+
     Ok(())
 }

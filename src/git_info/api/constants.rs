@@ -1,7 +1,9 @@
 pub mod paths {
-    pub const USER: &str = "/users/";
+    pub const USER: &str = "/users";
     pub const ME: &str = "/user";
     pub const REPOS: &str = "/repos";
+    pub const EVENTS: &str = "/events";
+    pub const COMMITS: &str = "/commits";
 }
 
 pub mod fields {
@@ -11,4 +13,6 @@ pub mod fields {
     pub const DEFAULT_AVATAR: &str = "https://avatars.githubusercontent.com/u/446496?v=4";
     pub const NAME: &str = "name";
     pub const DESCRIPTION: &str = "description";
+    pub const TYPE: &str = "type";
+    pub const CREATED_AT: &str = "created_at";
 }

@@ -6,16 +6,17 @@ mod parser;
 mod repository;
 mod requester;
 mod user;
+mod events;
 
 use std::vec;
 
-use super::data::{GitRepositories, GitRepository, GitUser};
+use super::data::{GitRepositories, GitRepository, GitUser, GitEvents, GitEvent};
 
-pub use requester::RequesterUReq;
+pub use requester::{RequesterUReq, Requester};
 
 pub use error::ApiError;
 
-use requester::{Headers, Methods, Requester};
+use requester::{Headers, Methods};
 
 use endpoints::Endpoints;
 
@@ -66,4 +67,4 @@ where
 }
 
 #[cfg(test)]
-use requester::{RequesterMock, Response};
+pub use requester::{RequesterMock, Response, UserJsonMock, RepositoryJsonMock, EventJsonMock};

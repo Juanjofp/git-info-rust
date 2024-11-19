@@ -1,6 +1,15 @@
+mod user_mock;
+mod repository_mock;
+mod event_mock;
+
 use super::{Headers, Methods, Requester, Response};
 
-#[cfg(test)]
+
+pub use user_mock::UserJsonMock;
+pub use repository_mock::RepositoryJsonMock;
+pub use event_mock::EventJsonMock;
+
+
 pub mod mocks {
 
     use std::cell::RefCell;

@@ -2,7 +2,7 @@ use std::fmt::Display;
 
 use super::ApiError;
 
-#[derive(Debug)]
+#[derive(Debug, PartialEq)]
 pub enum GitError {
     Api(ApiError),
 }

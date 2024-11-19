@@ -20,24 +20,24 @@ where
 }
 
 #[cfg(test)]
-use super::{RequesterMock, RequesterUReq, Response};
+use super::{RequesterMock, RequesterUReq, Response, UserJsonMock};
 
 #[cfg(test)]
 mod tests {
 
-    use super::{ApiError, ApiService, GitUser, Parser, RequesterMock, RequesterUReq, Response};
+    use super::{ApiError, ApiService, GitUser, Parser, RequesterMock, RequesterUReq, Response, UserJsonMock};
 
     #[test]
     fn test_user_success() {
-        let str_response = r#"{"login":"Juanjofp","id":446496,"node_id":"MDQ6VXNlcjQ0NjQ5Ng==","avatar_url":"https://avatars.githubusercontent.com/u/446496?v=4","gravatar_id":"","url":"https://api.github.com/users/Juanjofp","html_url":"https://github.com/Juanjofp","followers_url":"https://api.github.com/users/Juanjofp/followers","following_url":"https://api.github.com/users/Juanjofp/following{/other_user}","gists_url":"https://api.github.com/users/Juanjofp/gists{/gist_id}","starred_url":"https://api.github.com/users/Juanjofp/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/Juanjofp/subscriptions","organizations_url":"https://api.github.com/users/Juanjofp/orgs","repos_url":"https://api.github.com/users/Juanjofp/repos","events_url":"https://api.github.com/users/Juanjofp/events{/privacy}","received_events_url":"https://api.github.com/users/Juanjofp/received_events","type":"User","user_view_type":"public","site_admin":false,"name":"Juanjo","company":"Digio","blog":"http://juanjofp.com","location":"Murcia, Spain","email":"juanjo@juanjofp.com","hireable":null,"bio":null,"twitter_username":null,"notification_email":"juanjo@juanjofp.com","public_repos":62,"public_gists":5,"followers":37,"following":75,"created_at":"2010-10-20T07:04:01Z","updated_at":"2024-10-14T10:54:05Z"}"#;
+        let str_response = UserJsonMock::user();
 
         let expected_user = Parser::parse_git_user(
-            Some(&String::from(str_response)),
+            Some(&str_response),
             "https://api.github.com/users/juanjofp",
         )
         .unwrap();
 
-        let response = Response::new(200, Some(String::from(str_response)));
+        let response = Response::new(200, Some(str_response));
 
         let requester = RequesterMock::from_response(vec![response]);
 

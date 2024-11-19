@@ -8,6 +8,12 @@ impl RequesterUReq {
     }
 }
 
+impl Default for RequesterUReq {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Requester for RequesterUReq {
     fn fetch(
         &self,

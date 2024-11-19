@@ -109,7 +109,7 @@ mod tests {
     }
 
     #[test]
-    fn test_iter_repository() {
+    fn test_iter_repositories() {
         let repo1_name = "repo1".to_string();
         let repo1_description = "description1".to_string();
 

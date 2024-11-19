@@ -7,6 +7,7 @@ pub enum ApiError {
     InvalidJson { message: String },
     NotFound { message: String },
     FieldNotFound { message: String, field: String },
+    FieldInvalid { message: String, field: String },
 }
 
 impl ApiError {
@@ -43,6 +44,15 @@ impl ApiError {
         }
     }
 
+    pub fn field_invalid(field: &str, message: Option<String>) -> Self {
+        let message = message.unwrap_or(format!("Field {} is invalid", field));
+
+        ApiError::FieldInvalid {
+            message,
+            field: field.to_string(),
+        }
+    }
+
     pub fn message(&self) -> &str {
         match self {
             ApiError::NoResponse { message } => message,
@@ -50,6 +60,7 @@ impl ApiError {
             ApiError::InvalidJson { message } => message,
             ApiError::NotFound { message } => message,
             ApiError::FieldNotFound { message, .. } => message,
+            ApiError::FieldInvalid { message, .. } => message,
         }
     }
 
@@ -60,6 +71,7 @@ impl ApiError {
             ApiError::InvalidJson { .. } => "InvalidJson",
             ApiError::NotFound { .. } => "NotFound",
             ApiError::FieldNotFound { .. } => "FieldNotFound",
+            ApiError::FieldInvalid { .. } => "FieldInvalid",
         }
     }
 }
