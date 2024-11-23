@@ -1,6 +1,7 @@
 mod user_mock;
 mod repository_mock;
 mod event_mock;
+mod commit_mock;
 
 use super::{Headers, Methods, Requester, Response};
 
@@ -8,6 +9,7 @@ use super::{Headers, Methods, Requester, Response};
 pub use user_mock::UserJsonMock;
 pub use repository_mock::RepositoryJsonMock;
 pub use event_mock::EventJsonMock;
+pub use commit_mock::CommitMockJson;
 
 
 pub mod mocks {

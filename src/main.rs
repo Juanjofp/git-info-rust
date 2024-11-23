@@ -5,7 +5,7 @@ fn main() -> anyhow::Result<()> {
 
     let token = String::from("fake_token");
 
-    let git_info = GitInfo::new(token);
+    let git_info = GitInfo::authenticated(token);
 
     let user = git_info.user("octokit");
 
@@ -51,6 +51,17 @@ fn main() -> anyhow::Result<()> {
     events.iter().for_each(|event| {
         println!("Event: {} {}", event.kind, event.created_at);
     });
+
+    let git_info_anonymous = GitInfo::anonymous();
+
+    let user = git_info_anonymous.user("juanjo");
+    let Ok(user) = user else {
+        println!("Error: {:?}", user.unwrap_err());
+        return Err(anyhow::anyhow!("Error user Juanjo request"));
+    };
+
+    println!("User anonymous: {}", user.name);
+
 
 
     Ok(())

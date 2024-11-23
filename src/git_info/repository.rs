@@ -1,6 +1,6 @@
 use super::{Requester, GitError, GitInfo, GitRepositories, GitRepository};
 
-impl<T: Requester> GitInfo<T> {
+impl<U, T: Requester> GitInfo<U, T> {
     pub fn repositories(&self, username: &str) -> Result<GitRepositories, GitError> {
         self.api_service
             .repositories(username)

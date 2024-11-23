@@ -41,7 +41,7 @@ mod tests {
 
         let requester = RequesterMock::from_response(vec![response]);
 
-        let git_info = ApiService::new(requester, String::from("fake_token"));
+        let git_info = ApiService::new(requester, Some(String::from("fake_token")));
 
         let user = git_info.user("juanjofp").unwrap();
 
@@ -57,7 +57,7 @@ mod tests {
 
         let requester = RequesterMock::from_response(vec![response]);
 
-        let git_info = ApiService::new(requester, String::from("fake_token"));
+        let git_info = ApiService::new(requester, Some(String::from("fake_token")));
 
         let response = git_info.user("juanjofp");
 
@@ -77,7 +77,7 @@ mod tests {
 
         let requester = RequesterMock::from_response(vec![response]);
 
-        let git_info = ApiService::new(requester, String::from("fake_token"));
+        let git_info = ApiService::new(requester, Some(String::from("fake_token")));
 
         let response = git_info.user("juanjofp");
 
@@ -97,7 +97,7 @@ mod tests {
 
         let requester = RequesterMock::from_response(vec![response]);
 
-        let git_info = ApiService::new(requester, String::from("fake_token"));
+        let git_info = ApiService::new(requester, Some(String::from("fake_token")));
 
         let response = git_info.user("juanjofp");
 
@@ -118,7 +118,7 @@ mod tests {
 
         let requester = RequesterMock::from_response(vec![response]);
 
-        let git_info = ApiService::new(requester, String::from("fake_token"));
+        let git_info = ApiService::new(requester, Some(String::from("fake_token")));
 
         let response = git_info.user("juanjofp");
 
@@ -140,7 +140,7 @@ mod tests {
 
         let requester = RequesterUReq::new();
 
-        let token = String::from("fake_token");
+        let token = Some(String::from("fake_token"));
 
         let git_info = ApiService::new(requester, token);
 

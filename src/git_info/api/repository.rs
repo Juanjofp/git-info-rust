@@ -57,7 +57,7 @@ mod tests {
 
         let requester = RequesterMock::from_response(vec![response]);
 
-        let git_info = ApiService::new(requester, String::from("fake_token"));
+        let git_info = ApiService::new(requester, Some(String::from("fake_token")));
 
         let repos = git_info.repositories("juanjofp").unwrap();
 
@@ -76,7 +76,7 @@ mod tests {
 
         let requester = RequesterMock::from_response(vec![response]);
 
-        let git_info = ApiService::new(requester, String::from("fake_token"));
+        let git_info = ApiService::new(requester, Some(String::from("fake_token")));
 
         let repos = git_info.repositories("juanjofp").unwrap();
 
@@ -95,7 +95,7 @@ mod tests {
 
         let requester = RequesterMock::from_response(vec![response]);
 
-        let git_info = ApiService::new(requester, String::from("fake_token"));
+        let git_info = ApiService::new(requester, Some(String::from("fake_token")));
 
         let response = git_info.repositories("juanjofp");
 
@@ -111,7 +111,7 @@ mod tests {
     fn test_real_implementation() {
         let requester = RequesterUReq::new();
 
-        let token = String::from("fake_token");
+        let token = Some(String::from("fake_token"));
 
         let git_info = ApiService::new(requester, token);
 
@@ -138,7 +138,7 @@ mod tests {
 
         let requester = RequesterMock::from_response(vec![response]);
 
-        let git_info = ApiService::new(requester, String::from("fake_token"));
+        let git_info = ApiService::new(requester, Some(String::from("fake_token")));
 
         let repo = git_info.repository("juanjofp", "Hello-World").unwrap();
 

@@ -1,6 +1,6 @@
 use super::{Requester, GitError, GitInfo, GitUser};
 
-impl<T: Requester> GitInfo<T> {
+impl<U, T: Requester> GitInfo<U, T> {
     pub fn user(&self, username: &str) -> Result<GitUser, GitError> {
         self.api_service.user(username).map_err(GitError::from)
     }
@@ -23,7 +23,7 @@ mod tests {
 
       let requester = RequesterMock::from_response(vec![response]);
 
-      let git_info = GitInfo::from_requester(requester, "fake_token".to_string());
+      let git_info = GitInfo::from_requester_authenticated(requester, String::from("fake_token"));
 
       let error = git_info.user("juanjofp").unwrap_err();
 

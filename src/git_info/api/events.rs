@@ -41,7 +41,9 @@ mod tests {
 
         let requester = RequesterMock::from_response(vec![response]);
 
-        let git_info = ApiService::new(requester, String::from("fake_token"));
+        let token = String::from("fake_token");
+
+        let git_info = ApiService::new(requester, Some(token));
 
         let events = git_info.events("juanjofp").unwrap();
 
@@ -59,7 +61,7 @@ mod tests {
 
         let token = String::from("fake_token");
 
-        let git_info = ApiService::new(requester, token);
+        let git_info = ApiService::new(requester, Some(token));
 
         let repos = git_info.events("juanjofp").unwrap();
 

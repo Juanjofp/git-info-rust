@@ -34,15 +34,19 @@ impl<T> ApiService<T>
 where
     T: Requester,
 {
-    pub fn new(requester: T, token: String) -> Self {
-        let headers = Headers::from_iter(vec![
-            (String::from("Authorization"), format!("Bearer {}", token)),
-            (
-                String::from("Accept"),
-                String::from("application/vnd.github.v3+json"),
-            ),
-            (String::from("User-Agent"), String::from("jjfp::rust")),
-        ]);
+    pub fn new(requester: T, token: Option<String>) -> Self {
+
+      let mut headers_vector = vec![];
+
+      headers_vector.push(("Accept".to_string(), "application/vnd.github.v3+json".to_string()));
+      headers_vector.push(("User-Agent".to_string(), "jjfp::rust".to_string()));
+
+
+      if let Some(token) = token {
+          headers_vector.push(("Authorization".to_string(), format!("Bearer {}", token)));
+      }
+
+      let headers = Headers::from_iter(headers_vector);
 
         ApiService { headers, requester }
     }
