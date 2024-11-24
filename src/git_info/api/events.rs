@@ -1,4 +1,4 @@
-use super::{ApiError, ApiService, Endpoints, Methods, Parser, Requester, GitEvents};
+use super::{ApiError, ApiService, Endpoints, GitEvents, Methods, Parser, Requester};
 
 impl<T> ApiService<T>
 where
@@ -20,12 +20,12 @@ where
 }
 
 #[cfg(test)]
-use super::{RequesterMock, Response, EventJsonMock, RequesterUReq};
+use super::{EventJsonMock, RequesterMock, RequesterUReq, Response};
 
 #[cfg(test)]
 mod tests {
 
-    use super::{ApiService, Parser, RequesterMock, Response, EventJsonMock, RequesterUReq};
+    use super::{ApiService, EventJsonMock, Parser, RequesterMock, RequesterUReq, Response};
 
     #[test]
     fn test_events_success() {
@@ -49,9 +49,9 @@ mod tests {
 
         assert_eq!(events.size(), 2);
 
-        let event = events.get_event(0).unwrap();
+        let event = events.get(0).unwrap();
 
-        assert_eq!(event, expected_events.get_event(0).unwrap());
+        assert_eq!(event, expected_events.get(0).unwrap());
     }
 
     #[test]
@@ -69,7 +69,6 @@ mod tests {
 
         assert_eq!(repos.size(), 30);
 
-        repos.get_event(0).unwrap();
+        repos.get(0).unwrap();
     }
-
-  }
+}

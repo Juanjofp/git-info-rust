@@ -27,11 +27,11 @@ impl GitRepositories {
         }
     }
 
-    pub fn add_repository(&self, repository: GitRepository) {
+    pub fn add(&self, repository: GitRepository) {
         self.repositories.borrow_mut().push(Rc::new(repository));
     }
 
-    pub fn get_repository(&self, index: usize) -> Option<Rc<GitRepository>> {
+    pub fn get(&self, index: usize) -> Option<Rc<GitRepository>> {
         let repositories = self.repositories.borrow();
 
         let repository = repositories.get(index)?;
@@ -97,11 +97,11 @@ mod tests {
 
         let git_repository = GitRepository::new("repo1".to_string(), "description1".to_string());
 
-        git_repositories.add_repository(git_repository);
+        git_repositories.add(git_repository);
 
         assert_eq!(git_repositories.size(), 1);
 
-        let repo = git_repositories.get_repository(0).unwrap();
+        let repo = git_repositories.get(0).unwrap();
 
         assert_eq!(repo.name, "repo1".to_string());
 
@@ -118,12 +118,12 @@ mod tests {
 
         let git_repositories = GitRepositories::new();
 
-        git_repositories.add_repository(GitRepository::new(
+        git_repositories.add(GitRepository::new(
             repo1_name.clone(),
             repo1_description.clone(),
         ));
 
-        git_repositories.add_repository(GitRepository::new(
+        git_repositories.add(GitRepository::new(
             repo2_name.clone(),
             repo2_description.clone(),
         ));

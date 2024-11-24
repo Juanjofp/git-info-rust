@@ -9,7 +9,7 @@ use super::{Headers, Methods, Requester, Response};
 pub use user_mock::UserJsonMock;
 pub use repository_mock::RepositoryJsonMock;
 pub use event_mock::EventJsonMock;
-pub use commit_mock::CommitMockJson;
+pub use commit_mock::CommitJsonMock;
 
 
 pub mod mocks {

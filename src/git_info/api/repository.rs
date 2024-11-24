@@ -36,12 +36,14 @@ where
 }
 
 #[cfg(test)]
-use super::{RequesterMock, RequesterUReq, Response, RepositoryJsonMock};
+use super::{RepositoryJsonMock, RequesterMock, RequesterUReq, Response};
 
 #[cfg(test)]
 mod tests {
 
-    use super::{ApiError, ApiService, Parser, RequesterMock, RequesterUReq, Response, RepositoryJsonMock};
+    use super::{
+        ApiError, ApiService, Parser, RepositoryJsonMock, RequesterMock, RequesterUReq, Response,
+    };
 
     #[test]
     fn test_repositories_success() {
@@ -63,9 +65,9 @@ mod tests {
 
         assert_eq!(repos.size(), 1);
 
-        let repo = repos.get_repository(0).unwrap();
+        let repo = repos.get(0).unwrap();
 
-        assert_eq!(repo, expected_repositories.get_repository(0).unwrap());
+        assert_eq!(repo, expected_repositories.get(0).unwrap());
     }
 
     #[test]
@@ -82,7 +84,7 @@ mod tests {
 
         assert_eq!(repos.size(), 0);
 
-        assert!(repos.get_repository(0).is_none());
+        assert!(repos.get(0).is_none());
     }
 
     #[test]
@@ -121,7 +123,7 @@ mod tests {
 
         assert_eq!(repos.size(), 30);
 
-        repos.get_repository(0).unwrap();
+        repos.get(0).unwrap();
     }
 
     #[test]

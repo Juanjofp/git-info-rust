@@ -7,6 +7,7 @@ mod repository;
 mod requester;
 mod user;
 mod events;
+mod commit;
 
 use std::vec;
 

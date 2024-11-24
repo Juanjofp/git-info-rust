@@ -47,4 +47,4 @@ pub trait Requester {
 mod req_mock;
 
 #[cfg(test)]
-pub use req_mock::{mocks::RequesterMock, UserJsonMock, RepositoryJsonMock, EventJsonMock};
+pub use req_mock::{mocks::RequesterMock, UserJsonMock, RepositoryJsonMock, EventJsonMock, CommitJsonMock};

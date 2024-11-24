@@ -1,6 +1,7 @@
 mod repository;
 mod user;
 mod event;
+mod commit;
 
 pub use user::GitUser;
 
