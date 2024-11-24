@@ -1,10 +1,12 @@
+mod commit;
+mod event;
 mod repository;
 mod user;
-mod event;
-mod commit;
 
 pub use user::GitUser;
 
 pub use repository::{GitRepositories, GitRepository};
 
-pub use event::{GitEvents, GitEvent};
+pub use event::{GitEvent, GitEvents};
+
+pub use commit::GitCommits;

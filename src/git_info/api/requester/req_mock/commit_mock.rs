@@ -2,7 +2,7 @@ pub struct CommitJsonMock;
 
 impl CommitJsonMock {
     pub fn commit() -> String {
-      r#"  {
+        r#"  {
     "url": "https://api.github.com/repos/octocat/Hello-World/commits/6dcb09b5b57875f334f61aebed695e2e4193db5e",
     "sha": "6dcb09b5b57875f334f61aebed695e2e4193db5e",
     "node_id": "MDY6Q29tbWl0NmRjYjA5YjViNTc4NzVmMzM0ZjYxYWViZWQ2OTVlMmU0MTkzZGI1ZQ==",
@@ -83,6 +83,6 @@ impl CommitJsonMock {
     }
 
     pub fn commits() -> String {
-      format!("[{}]", Self::commit())
+        format!("[{}]", Self::commit())
     }
 }

@@ -1,19 +1,19 @@
+mod commit;
 mod constants;
 mod endpoints;
 mod error;
+mod events;
 mod me;
 mod parser;
 mod repository;
 mod requester;
 mod user;
-mod events;
-mod commit;
 
 use std::vec;
 
-use super::data::{GitRepositories, GitRepository, GitUser, GitEvents, GitEvent};
+use super::data::{GitCommits, GitEvent, GitEvents, GitRepositories, GitRepository, GitUser};
 
-pub use requester::{RequesterUReq, Requester};
+pub use requester::{Requester, RequesterUReq};
 
 pub use error::ApiError;
 
@@ -36,18 +36,19 @@ where
     T: Requester,
 {
     pub fn new(requester: T, token: Option<String>) -> Self {
+        let mut headers_vector = vec![];
 
-      let mut headers_vector = vec![];
+        headers_vector.push((
+            "Accept".to_string(),
+            "application/vnd.github.v3+json".to_string(),
+        ));
+        headers_vector.push(("User-Agent".to_string(), "jjfp::rust".to_string()));
 
-      headers_vector.push(("Accept".to_string(), "application/vnd.github.v3+json".to_string()));
-      headers_vector.push(("User-Agent".to_string(), "jjfp::rust".to_string()));
+        if let Some(token) = token {
+            headers_vector.push(("Authorization".to_string(), format!("Bearer {}", token)));
+        }
 
-
-      if let Some(token) = token {
-          headers_vector.push(("Authorization".to_string(), format!("Bearer {}", token)));
-      }
-
-      let headers = Headers::from_iter(headers_vector);
+        let headers = Headers::from_iter(headers_vector);
 
         ApiService { headers, requester }
     }
@@ -72,4 +73,6 @@ where
 }
 
 #[cfg(test)]
-pub use requester::{RequesterMock, Response, UserJsonMock, RepositoryJsonMock, EventJsonMock};
+pub use requester::{
+    CommitJsonMock, EventJsonMock, RepositoryJsonMock, RequesterMock, Response, UserJsonMock,
+};

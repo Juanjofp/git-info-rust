@@ -56,7 +56,11 @@ impl GitCommits {
         Some(commit)
     }
 
-    fn iter(&self) -> GitCommitIter {
+    pub fn size(&self) -> usize {
+        self.commits.borrow().len()
+    }
+
+    pub fn iter(&self) -> GitCommitIter {
         GitCommitIter {
             commits: &self.commits,
             index: Cell::new(0),
@@ -100,6 +104,8 @@ mod tests {
         let commits = GitCommits::new();
 
         commits.add(expected_commit.clone());
+
+        assert_eq!(commits.size(), 1);
 
         let commit = commits.get(0).unwrap();
 
