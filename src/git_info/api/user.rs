@@ -15,7 +15,7 @@ where
             return Err(error);
         }
 
-        Parser::parse_git_user(response.body(), &url)
+        Parser::user(response.body(), &url)
     }
 }
 
@@ -31,7 +31,7 @@ mod tests {
     fn test_user_success() {
         let str_response = UserJsonMock::user();
 
-        let expected_user = Parser::parse_git_user(
+        let expected_user = Parser::user(
             Some(&str_response),
             "https://api.github.com/users/juanjofp",
         )

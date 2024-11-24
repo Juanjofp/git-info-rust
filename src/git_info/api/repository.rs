@@ -17,7 +17,7 @@ where
             return Err(error);
         }
 
-        Parser::parse_git_repositories(response.body(), &url)
+        Parser::repositories(response.body(), &url)
     }
 
     pub fn repository(&self, username: &str, repository: &str) -> Result<GitRepository, ApiError> {
@@ -31,7 +31,7 @@ where
             return Err(error);
         }
 
-        Parser::parse_git_repository(response.body(), &url)
+        Parser::repository(response.body(), &url)
     }
 }
 
@@ -49,7 +49,7 @@ mod tests {
     fn test_repositories_success() {
         let str_response = RepositoryJsonMock::repositories();
 
-        let expected_repositories = Parser::parse_git_repositories(
+        let expected_repositories = Parser::repositories(
             Some(&str_response),
             "https://api.github.com/users/juanjofp/repos",
         )
@@ -130,7 +130,7 @@ mod tests {
     fn test_repository_success() {
         let str_response = RepositoryJsonMock::repository();
 
-        let expected_repository = Parser::parse_git_repository(
+        let expected_repository = Parser::repository(
             Some(&str_response),
             "https://api.github.com/users/juanjofp/repos",
         )

@@ -15,7 +15,7 @@ where
             return Err(error);
         }
 
-        Parser::parse_git_events(response.body(), &url)
+        Parser::events(response.body(), &url)
     }
 }
 
@@ -31,7 +31,7 @@ mod tests {
     fn test_events_success() {
         let str_response = EventJsonMock::events();
 
-        let expected_events = Parser::parse_git_events(
+        let expected_events = Parser::events(
             Some(&str_response),
             "https://api.github.com/users/juanjofp/events",
         )

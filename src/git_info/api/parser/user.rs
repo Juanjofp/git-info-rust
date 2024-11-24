@@ -1,11 +1,7 @@
-
-use super::{constants, ApiError, Parser, GitUser};
-
+use super::{constants, ApiError, GitUser, Parser};
 
 impl Parser {
-
-
-    pub fn parse_git_user(body: Option<&String>, url: &str) -> Result<GitUser, ApiError> {
+    pub fn user(body: Option<&String>, url: &str) -> Result<GitUser, ApiError> {
         let json = Parser::get_body_as_json(body, url)?;
 
         let Some(user) = json[constants::fields::LOGIN].as_str() else {
@@ -26,5 +22,4 @@ impl Parser {
 
         Ok(user)
     }
-
 }

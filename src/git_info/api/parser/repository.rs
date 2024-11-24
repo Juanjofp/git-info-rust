@@ -1,10 +1,7 @@
 use super::{constants, ApiError, GitRepositories, GitRepository, Parser};
 
 impl Parser {
-    pub fn parse_git_repositories(
-        body: Option<&String>,
-        url: &str,
-    ) -> Result<GitRepositories, ApiError> {
+    pub fn repositories(body: Option<&String>, url: &str) -> Result<GitRepositories, ApiError> {
         let json = Parser::get_body_as_json(body, url)?;
 
         let Some(json_array) = json.as_array() else {
@@ -14,7 +11,7 @@ impl Parser {
         let repos = json_array
             .iter()
             .fold(GitRepositories::new(), |repsoitories, repo_str| {
-                let Ok(repo) = Parser::parse_git_repository_from_value(repo_str, url) else {
+                let Ok(repo) = Parser::repository_from_value(repo_str, url) else {
                     return repsoitories;
                 };
 
@@ -26,16 +23,13 @@ impl Parser {
         Ok(repos)
     }
 
-    pub fn parse_git_repository(
-        body: Option<&String>,
-        url: &str,
-    ) -> Result<GitRepository, ApiError> {
+    pub fn repository(body: Option<&String>, url: &str) -> Result<GitRepository, ApiError> {
         let json = Parser::get_body_as_json(body, url)?;
 
-        Parser::parse_git_repository_from_value(&json, url)
+        Parser::repository_from_value(&json, url)
     }
 
-    fn parse_git_repository_from_value(
+    fn repository_from_value(
         value: &serde_json::Value,
         url: &str,
     ) -> Result<GitRepository, ApiError> {

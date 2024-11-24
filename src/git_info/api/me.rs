@@ -15,7 +15,7 @@ where
             return Err(error);
         }
 
-        Parser::parse_git_user(response.body(), &url)
+        Parser::user(response.body(), &url)
     }
 }
 
@@ -25,17 +25,16 @@ use super::{RequesterMock, RequesterUReq, Response, UserJsonMock};
 #[cfg(test)]
 mod tests {
 
-    use super::{ApiError, ApiService, GitUser, Parser, RequesterMock, RequesterUReq, Response, UserJsonMock};
+    use super::{
+        ApiError, ApiService, GitUser, Parser, RequesterMock, RequesterUReq, Response, UserJsonMock,
+    };
 
     #[test]
     fn test_me_success() {
         let str_response = UserJsonMock::user();
 
-        let expected_user = Parser::parse_git_user(
-            Some(&str_response),
-            "https://api.github.com/user",
-        )
-        .unwrap();
+        let expected_user =
+            Parser::user(Some(&str_response), "https://api.github.com/user").unwrap();
 
         let response = Response::new(200, Some(str_response));
 
