@@ -115,7 +115,8 @@ mod tests {
 
     #[test]
     fn test_me_without_login() {
-        let expected_error = ApiError::field_not_found("login", None);
+        let expected_error =
+            ApiError::field_not_found("login", Some(String::from("https://api.github.com/user")));
 
         let str_response = UserJsonMock::without_login();
 

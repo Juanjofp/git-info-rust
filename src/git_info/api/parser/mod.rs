@@ -3,7 +3,10 @@ mod event;
 mod repository;
 mod user;
 
-use super::{constants, ApiError, GitEvent, GitEvents, GitRepositories, GitRepository, GitUser};
+use super::{
+    constants, ApiError, GitCommit, GitCommits, GitEvent, GitEvents, GitRepositories,
+    GitRepository, GitUser,
+};
 
 pub struct Parser;
 
@@ -21,4 +24,20 @@ impl Parser {
 
         Ok(json)
     }
+
+    fn get_body_as_json_array(
+        body: Option<&String>,
+        url: &str,
+    ) -> Result<Vec<serde_json::Value>, ApiError> {
+        let json = Parser::get_body_as_json(body, url)?;
+
+        let Some(json_array) = json.as_array() else {
+            return Err(ApiError::invalid_json(Some(url.to_string())));
+        };
+
+        Ok(json_array.to_vec())
+    }
 }
+
+#[cfg(test)]
+use super::CommitJsonMock;

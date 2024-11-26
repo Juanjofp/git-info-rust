@@ -15,4 +15,9 @@ pub mod fields {
     pub const DESCRIPTION: &str = "description";
     pub const TYPE: &str = "type";
     pub const CREATED_AT: &str = "created_at";
+    pub const COMMIT: &str = "commit";
+    pub const COMMITTER: &str = "committer";
+    pub const AUTHOR: &str = "author";
+    pub const DATE: &str = "date";
+    pub const MESSAGE: &str = "message";
 }

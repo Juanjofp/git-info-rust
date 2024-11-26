@@ -2,11 +2,7 @@ use super::{constants, ApiError, GitRepositories, GitRepository, Parser};
 
 impl Parser {
     pub fn repositories(body: Option<&String>, url: &str) -> Result<GitRepositories, ApiError> {
-        let json = Parser::get_body_as_json(body, url)?;
-
-        let Some(json_array) = json.as_array() else {
-            return Err(ApiError::invalid_json(Some(url.to_string())));
-        };
+        let json_array = Parser::get_body_as_json_array(body, url)?;
 
         let repos = json_array
             .iter()

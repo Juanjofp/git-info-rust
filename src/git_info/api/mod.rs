@@ -11,7 +11,9 @@ mod user;
 
 use std::vec;
 
-use super::data::{GitCommits, GitEvent, GitEvents, GitRepositories, GitRepository, GitUser};
+use super::data::{
+    GitCommit, GitCommits, GitEvent, GitEvents, GitRepositories, GitRepository, GitUser,
+};
 
 pub use requester::{Requester, RequesterUReq};
 

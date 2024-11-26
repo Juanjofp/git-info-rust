@@ -4,11 +4,7 @@ use super::{constants, ApiError, GitEvent, GitEvents, Parser};
 
 impl Parser {
     pub fn events(body: Option<&String>, url: &str) -> Result<GitEvents, ApiError> {
-        let json = Parser::get_body_as_json(body, url)?;
-
-        let Some(json_array) = json.as_array() else {
-            return Err(ApiError::invalid_json(Some(url.to_string())));
-        };
+        let json_array = Parser::get_body_as_json_array(body, url)?;
 
         let events = json_array
             .iter()
@@ -53,7 +49,7 @@ impl Parser {
         };
 
         let Some(created_at) = created_at.as_str() else {
-            return Err(ApiError::field_not_found(
+            return Err(ApiError::field_invalid(
                 constants::fields::CREATED_AT,
                 some_url,
             ));

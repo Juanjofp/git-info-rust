@@ -1,4 +1,5 @@
 mod api;
+mod commit;
 mod data;
 mod error;
 mod event;
@@ -8,7 +9,7 @@ mod user;
 
 use std::marker::PhantomData;
 
-use data::{GitEvents, GitRepositories, GitRepository, GitUser};
+use data::{GitCommits, GitEvents, GitRepositories, GitRepository, GitUser};
 
 use api::{ApiError, ApiService, Requester, RequesterUReq};
 

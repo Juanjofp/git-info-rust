@@ -31,6 +31,7 @@ impl GitCommit {
     }
 }
 
+#[derive(Clone, Debug, PartialEq)]
 pub struct GitCommits {
     commits: RefCell<Vec<Rc<GitCommit>>>,
 }
@@ -68,7 +69,13 @@ impl GitCommits {
     }
 }
 
-struct GitCommitIter<'a> {
+impl Default for GitCommits {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
+pub struct GitCommitIter<'a> {
     commits: &'a RefCell<Vec<Rc<GitCommit>>>,
     index: Cell<usize>,
 }

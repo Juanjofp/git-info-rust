@@ -42,6 +42,17 @@ fn main() -> anyhow::Result<()> {
 
     println!("Repo: {} {}", repo.name, repo.description);
 
+    let commits = git_info.commits("juanjofp", "git-info-rust");
+
+    let Ok(commits) = commits else {
+        println!("Error: {:?}", commits.unwrap_err());
+        return Err(anyhow::anyhow!("Error commits request"));
+    };
+
+    commits.iter().for_each(|commit| {
+        println!("Commit: {:?}", commit);
+    });
+
     let events = git_info.events("juanjofp");
     let Ok(events) = events else {
         println!("Error: {:?}", events.unwrap_err());
@@ -61,8 +72,6 @@ fn main() -> anyhow::Result<()> {
     };
 
     println!("User anonymous: {}", user.name);
-
-
 
     Ok(())
 }

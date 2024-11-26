@@ -25,17 +25,16 @@ use super::{RequesterMock, RequesterUReq, Response, UserJsonMock};
 #[cfg(test)]
 mod tests {
 
-    use super::{ApiError, ApiService, GitUser, Parser, RequesterMock, RequesterUReq, Response, UserJsonMock};
+    use super::{
+        ApiError, ApiService, GitUser, Parser, RequesterMock, RequesterUReq, Response, UserJsonMock,
+    };
 
     #[test]
     fn test_user_success() {
         let str_response = UserJsonMock::user();
 
-        let expected_user = Parser::user(
-            Some(&str_response),
-            "https://api.github.com/users/juanjofp",
-        )
-        .unwrap();
+        let expected_user =
+            Parser::user(Some(&str_response), "https://api.github.com/users/juanjofp").unwrap();
 
         let response = Response::new(200, Some(str_response));
 
@@ -110,7 +109,10 @@ mod tests {
 
     #[test]
     fn test_user_without_login() {
-        let expected_error = ApiError::field_not_found("login", None);
+        let expected_error = ApiError::field_not_found(
+            "login",
+            Some(String::from("https://api.github.com/users/juanjofp")),
+        );
 
         let str_response = r#"{"id":446496,"node_id":"MDQ6VXNlcjQ0NjQ5Ng==","avatar_url":"https://avatars.githubusercontent.com/u/446496?v=4","gravatar_id":"","url":"https://api.github.com/users/Juanjofp"}"#;
 

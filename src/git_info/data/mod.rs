@@ -9,4 +9,4 @@ pub use repository::{GitRepositories, GitRepository};
 
 pub use event::{GitEvent, GitEvents};
 
-pub use commit::GitCommits;
+pub use commit::{GitCommit, GitCommits};
