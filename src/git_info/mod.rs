@@ -70,5 +70,8 @@ impl GitInfo<Anonymous, RequesterUReq> {
     }
 }
 
+pub type GitInfoAnonymousUReq = GitInfo<Anonymous, RequesterUReq>;
+pub type GitInfoAuthenticatedUReq = GitInfo<Authenticated, RequesterUReq>;
+
 #[cfg(test)]
 use api::{RequesterMock, Response};
