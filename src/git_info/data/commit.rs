@@ -152,8 +152,9 @@ mod tests {
 
     fn create_commit(message: String) -> GitCommit {
         let user = GitUser::new(
+            String::from("1234"),
             String::from("Juanjo"),
-            String::from("juanjo@juanjofp.com"),
+            Some(String::from("juanjo@juanjofp.com")),
             String::from("http://avatar_url.com"),
         );
 

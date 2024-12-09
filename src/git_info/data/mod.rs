@@ -3,7 +3,7 @@ mod event;
 mod repository;
 mod user;
 
-pub use user::GitUser;
+pub use user::{GitUser, GitUserInfo};
 
 pub use repository::{GitRepositories, GitRepository};
 

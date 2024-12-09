@@ -13,6 +13,7 @@ use std::vec;
 
 use super::data::{
     GitCommit, GitCommits, GitEvent, GitEvents, GitRepositories, GitRepository, GitUser,
+    GitUserInfo,
 };
 
 pub use requester::{Requester, RequesterUReq};

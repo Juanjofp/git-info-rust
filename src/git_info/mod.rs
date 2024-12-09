@@ -9,7 +9,7 @@ mod user;
 
 use std::marker::PhantomData;
 
-use data::{GitCommits, GitEvents, GitRepositories, GitRepository, GitUser};
+use data::{GitCommits, GitEvents, GitRepositories, GitRepository, GitUser, GitUserInfo};
 
 use api::{ApiError, ApiService, Requester, RequesterUReq};
 

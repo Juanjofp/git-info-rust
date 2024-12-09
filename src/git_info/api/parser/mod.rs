@@ -5,7 +5,7 @@ mod user;
 
 use super::{
     constants, ApiError, GitCommit, GitCommits, GitEvent, GitEvents, GitRepositories,
-    GitRepository, GitUser,
+    GitRepository, GitUser, GitUserInfo,
 };
 
 pub struct Parser;
@@ -40,4 +40,4 @@ impl Parser {
 }
 
 #[cfg(test)]
-use super::CommitJsonMock;
+use super::{CommitJsonMock, UserJsonMock};

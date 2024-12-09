@@ -157,8 +157,9 @@ mod tests {
 
     fn generate_commits() -> GitCommits {
         let expected_user = GitUser::new(
+            String::from("1"),
             "octocat".to_string(),
-            "".to_string(),
+            None,
             "https://github.com/images/error/octocat_happy.gif".to_string(),
         );
 
