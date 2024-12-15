@@ -4,14 +4,14 @@ use chrono::{DateTime, Utc};
 
 use crate::git_info::api::constants::fields;
 
-use super::{constants, ApiError, GitUser, GitUserInfo, Parser};
+use super::{constants, ApiError, GitUser, GitUserInfo, GitUserRepos, Parser};
 
 impl Parser {
-    pub fn user(body: Option<&String>, url: &str) -> Result<GitUser, ApiError> {
-        let json = Parser::get_body_as_json(body, url)?;
+    // pub fn user(body: Option<&String>, url: &str) -> Result<GitUser, ApiError> {
+    //     let json = Parser::get_body_as_json(body, url)?;
 
-        Parser::user_from_value(&json, url)
-    }
+    //     Parser::user_from_value(&json, url)
+    // }
 
     pub fn user_from_value(value: &serde_json::Value, url: &str) -> Result<GitUser, ApiError> {
         let url = Some(url.to_string());
@@ -163,9 +163,7 @@ impl Parser {
 
         let user = Rc::new(user);
 
-        let user_info = GitUserInfo::new(
-            user,
-            name,
+        let user_repo = GitUserRepos::new(
             public_repos,
             public_gists,
             followers,
@@ -174,10 +172,9 @@ impl Parser {
             private_gists,
             owned_private_repos,
             collaborators,
-            disk_usage,
-            created_at,
-            update_at,
         );
+
+        let user_info = GitUserInfo::new(user, name, user_repo, disk_usage, created_at, update_at);
 
         Ok(user_info)
     }

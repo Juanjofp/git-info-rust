@@ -5,7 +5,7 @@ mod user;
 
 use super::{
     constants, ApiError, GitCommit, GitCommits, GitEvent, GitEvents, GitRepositories,
-    GitRepository, GitUser, GitUserInfo,
+    GitRepository, GitUser, GitUserInfo, GitUserRepos,
 };
 
 pub struct Parser;

@@ -26,8 +26,7 @@ use super::{RequesterMock, RequesterUReq, Response, UserJsonMock};
 mod tests {
 
     use super::{
-        ApiError, ApiService, GitUserInfo, Parser, RequesterMock, RequesterUReq, Response,
-        UserJsonMock,
+        ApiError, ApiService, Parser, RequesterMock, RequesterUReq, Response, UserJsonMock,
     };
 
     #[test]
@@ -149,6 +148,7 @@ mod tests {
 
         let user = git_info.me().unwrap();
 
-        // assert_eq!(user, expected_user);
+        assert_eq!(user.user.login, "juanjofp");
+        assert_eq!(user.user.id, "1");
     }
 }

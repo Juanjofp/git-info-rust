@@ -22,11 +22,7 @@ impl GitUser {
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct GitUserInfo {
-    pub user: Rc<GitUser>,
-
-    pub name: Option<String>,
-
+pub struct GitUserRepos {
     pub public_repos: u32,
     pub public_gists: u32,
     pub followers: u32,
@@ -37,6 +33,41 @@ pub struct GitUserInfo {
     pub owned_private_repos: u32,
 
     pub collaborators: u32,
+}
+
+impl GitUserRepos {
+    pub fn new(
+        public_repos: u32,
+        public_gists: u32,
+        followers: u32,
+        following: u32,
+
+        private_repos: u32,
+        private_gists: u32,
+        owned_private_repos: u32,
+
+        collaborators: u32,
+    ) -> Self {
+        GitUserRepos {
+            public_repos,
+            public_gists,
+            followers,
+            following,
+            private_repos,
+            private_gists,
+            owned_private_repos,
+            collaborators,
+        }
+    }
+}
+
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct GitUserInfo {
+    pub user: Rc<GitUser>,
+
+    pub name: Option<String>,
+
+    pub repo_info: GitUserRepos,
 
     pub disk_usage: u32,
 
@@ -50,16 +81,7 @@ impl GitUserInfo {
 
         name: Option<String>,
 
-        public_repos: u32,
-        public_gists: u32,
-        followers: u32,
-        following: u32,
-
-        private_repos: u32,
-        private_gists: u32,
-        owned_private_repos: u32,
-
-        collaborators: u32,
+        repo_info: GitUserRepos,
 
         disk_usage: u32,
 
@@ -69,14 +91,7 @@ impl GitUserInfo {
         GitUserInfo {
             user,
             name,
-            public_repos,
-            public_gists,
-            followers,
-            following,
-            private_repos,
-            private_gists,
-            owned_private_repos,
-            collaborators,
+            repo_info,
             disk_usage,
             created_at,
             updated_at,

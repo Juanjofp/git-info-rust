@@ -143,6 +143,7 @@ mod tests {
 
         let user = git_info.user("12345432345").unwrap();
 
-        // assert_eq!(user, expected_user);
+        assert_eq!(user.user.login, "juanjofp");
+        assert_eq!(user.user.id, "1");
     }
 }

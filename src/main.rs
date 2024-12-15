@@ -14,7 +14,7 @@ fn main() -> anyhow::Result<()> {
         return Err(anyhow::anyhow!("Error user request"));
     };
 
-    println!("User: {}", user.name);
+    println!("User: {}", user.user.login);
 
     let me = git_info.me();
     let Ok(me) = me else {
@@ -22,7 +22,7 @@ fn main() -> anyhow::Result<()> {
         return Err(anyhow::anyhow!("Error me request"));
     };
 
-    println!("Me: {}", me.name);
+    println!("Me: {}", me.user.login);
 
     let repos = git_info.repositories("juanjofp");
     let Ok(repos) = repos else {
@@ -71,7 +71,7 @@ fn main() -> anyhow::Result<()> {
         return Err(anyhow::anyhow!("Error user Juanjo request"));
     };
 
-    println!("User anonymous: {}", user.name);
+    println!("User anonymous: {}", user.user.login);
 
     Ok(())
 }
